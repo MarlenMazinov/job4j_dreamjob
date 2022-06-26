@@ -1,4 +1,4 @@
-package ru.job4j.dream.model;
+package ru.job4j.dreamjob.model;
 
 import java.util.Date;
 import java.util.Objects;
