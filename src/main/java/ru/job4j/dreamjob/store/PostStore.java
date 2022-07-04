@@ -7,12 +7,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PostStore {
 
     private static final PostStore INST = new PostStore();
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
+
+    private final AtomicInteger counter;
 
     private PostStore() {
         posts.put(1, new Post(1, "Junior Java Job",
@@ -24,6 +27,7 @@ public class PostStore {
         posts.put(3, new Post(3, "Senior Java Job",
                 "This post contains iformation about Senior Java vacancy",
                 new Date(2022, Calendar.JUNE, 2, 15, 0)));
+        counter = new AtomicInteger(3);
     }
 
     public static PostStore instOf() {
@@ -35,6 +39,7 @@ public class PostStore {
     }
 
     public void add(Post post) {
-        posts.put(posts.size() + 1, post);
+        post.setId(counter.incrementAndGet());
+        posts.put(post.getId(), post);
     }
 }
