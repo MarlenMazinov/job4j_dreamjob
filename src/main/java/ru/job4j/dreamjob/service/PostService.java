@@ -3,18 +3,23 @@ package ru.job4j.dreamjob.service;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostStore;
 
+import java.util.Collection;
 import java.util.List;
 
 public class PostService {
 
-    private final PostStore store = PostStore.instOf();
+    private final PostStore store;
 
-    public List<Post> findAll() {
-        return (List<Post>) store.findAll();
+    public PostService() {
+        this.store = PostStore.instOf();
+    }
+
+    public Collection<Post> findAll() {
+        return store.findAll();
     }
 
     public Post findById(int id) {
-        return findAll().get(id);
+        return store.findById(id);
     }
 
     public void add(Post post) {
