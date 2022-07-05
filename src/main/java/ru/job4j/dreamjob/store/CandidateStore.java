@@ -1,18 +1,22 @@
 package ru.job4j.dreamjob.store;
 
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.model.Post;
 
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CandidateStore {
 
     private static final CandidateStore INST = new CandidateStore();
 
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
+
+    private final AtomicInteger counter;
 
     private CandidateStore() {
         candidates.put(1, new Candidate(1, "Junior Java Developer",
@@ -28,6 +32,7 @@ public class CandidateStore {
                         + " Oracle/PostgreSQL/Redis, REST, SOAP, Kafka/RabbitMQ, Docker,"
                         + " Kubernetes/OpenShift, XML, JSON",
                 new Date(2022, Calendar.JUNE, 5, 13, 0)));
+        counter = new AtomicInteger(3);
     }
 
     public static CandidateStore instOf() {
@@ -36,5 +41,18 @@ public class CandidateStore {
 
     public Collection<Candidate> findAll() {
         return candidates.values();
+    }
+
+    public Candidate findById(int id) {
+        return candidates.get(id);
+    }
+
+    public void add(Candidate candidate) {
+        candidate.setId(counter.incrementAndGet());
+        candidates.put(candidate.getId(), candidate);
+    }
+
+    public void update(Candidate candidate) {
+        candidates.replace(candidate.getId(), candidate);
     }
 }
