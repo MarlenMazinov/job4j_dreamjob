@@ -12,14 +12,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class PostStore {
-
-    private static final PostStore INST = new PostStore();
-
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
 
     private final AtomicInteger counter;
 
-    private PostStore() {
+    public PostStore() {
         posts.put(1, new Post(1, "Junior Java Job",
                 "This post contains iformation about Junior Java vacancy",
                 new Date(2022, Calendar.MAY, 11, 10, 25)));
@@ -30,10 +27,6 @@ public class PostStore {
                 "This post contains iformation about Senior Java vacancy",
                 new Date(2022, Calendar.JUNE, 2, 15, 0)));
         counter = new AtomicInteger(3);
-    }
-
-    public static PostStore instOf() {
-        return INST;
     }
 
     public Collection<Post> findAll() {

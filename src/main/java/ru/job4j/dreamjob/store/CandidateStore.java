@@ -1,7 +1,6 @@
 package ru.job4j.dreamjob.store;
 
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.model.Post;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -12,13 +11,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CandidateStore {
 
-    private static final CandidateStore INST = new CandidateStore();
-
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private final AtomicInteger counter;
 
-    private CandidateStore() {
+    public CandidateStore() {
         candidates.put(1, new Candidate(1, "Junior Java Developer",
                 "Tech Stack : Java Core, Spring, Hibernate, Git, PostgreSQL."
                         + "Experience 1 year",
@@ -33,10 +30,6 @@ public class CandidateStore {
                         + " Kubernetes/OpenShift, XML, JSON",
                 new Date(2022, Calendar.JUNE, 5, 13, 0)));
         counter = new AtomicInteger(3);
-    }
-
-    public static CandidateStore instOf() {
-        return INST;
     }
 
     public Collection<Candidate> findAll() {

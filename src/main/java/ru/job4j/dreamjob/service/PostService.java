@@ -12,7 +12,7 @@ public class PostService {
     private final PostStore store;
 
     public PostService() {
-        this.store = PostStore.instOf();
+        this.store = new PostStore();
     }
 
     public Collection<Post> findAll() {
