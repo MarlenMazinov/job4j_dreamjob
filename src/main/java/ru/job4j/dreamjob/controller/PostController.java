@@ -13,7 +13,11 @@ import ru.job4j.dreamjob.service.PostService;
 
 @Controller
 public class PostController {
-    private final PostService service = new PostService();
+    private final PostService service;
+
+    public PostController(PostService service) {
+        this.service = service;
+    }
 
     @GetMapping("/posts")
     public String posts(Model model) {
