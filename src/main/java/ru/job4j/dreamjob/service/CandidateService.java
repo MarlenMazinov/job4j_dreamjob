@@ -11,8 +11,8 @@ public class CandidateService {
 
     private final CandidateStore store;
 
-    public CandidateService() {
-        this.store = new CandidateStore();
+    public CandidateService(CandidateStore store) {
+        this.store = store;
     }
 
     public Collection<Candidate> findAll() {

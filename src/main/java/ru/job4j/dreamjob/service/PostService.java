@@ -11,8 +11,8 @@ public class PostService {
 
     private final PostStore store;
 
-    public PostService() {
-        this.store = new PostStore();
+    public PostService(PostStore store) {
+        this.store = store;
     }
 
     public Collection<Post> findAll() {
