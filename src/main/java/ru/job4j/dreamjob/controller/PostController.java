@@ -1,6 +1,7 @@
 package ru.job4j.dreamjob.controller;
 
 
+import org.junit.runner.notification.RunListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import ru.job4j.dreamjob.service.PostService;
 
 
 @Controller
+@RunListener.ThreadSafe
 public class PostController {
     private final PostService service;
 

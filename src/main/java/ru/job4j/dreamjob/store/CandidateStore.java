@@ -1,6 +1,6 @@
 package ru.job4j.dreamjob.store;
 
-import org.springframework.stereotype.Component;
+import org.junit.runner.notification.RunListener;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 
@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
+@RunListener.ThreadSafe
 public class CandidateStore {
 
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
