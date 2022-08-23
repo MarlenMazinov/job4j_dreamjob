@@ -1,6 +1,6 @@
 package ru.job4j.dreamjob.service;
 
-import org.junit.runner.notification.RunListener;
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostStore;
@@ -8,7 +8,7 @@ import ru.job4j.dreamjob.store.PostStore;
 import java.util.Collection;
 
 @Service
-@RunListener.ThreadSafe
+@ThreadSafe
 public class PostService {
 
     private final PostStore store;
