@@ -7,6 +7,8 @@ public class Candidate {
     private int id;
     private String name;
 
+    private byte[] photo;
+
     private String description;
 
     private Date created;
@@ -40,6 +42,14 @@ public class Candidate {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     public String getDescription() {
