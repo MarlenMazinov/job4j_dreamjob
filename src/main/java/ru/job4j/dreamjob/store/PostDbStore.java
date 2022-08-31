@@ -42,7 +42,11 @@ public class PostDbStore {
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
-            ps.setInt(2, post.getCity().getId());
+            if (post.getCity() != null) {
+                ps.setInt(2, post.getCity().getId());
+            } else {
+                ps.setInt(2, -1);
+            }
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -60,7 +64,11 @@ public class PostDbStore {
              PreparedStatement ps = cn.prepareStatement("UPDATE post SET name=?, city_id=? WHERE id = ?")
         ) {
             ps.setString(1, post.getName());
-            ps.setInt(2, post.getCity().getId());
+            if (post.getCity() != null) {
+                ps.setInt(2, post.getCity().getId());
+            } else {
+                ps.setInt(2, -1);
+            }
             ps.setInt(3, post.getId());
             ps.execute();
         } catch (Exception e) {
@@ -82,5 +90,18 @@ public class PostDbStore {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /*
+    Данный метод используется при выполнении метода whenFindAllPosts() в тестах
+     */
+    public void clearTable() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("DELETE FROM post")
+        ) {
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

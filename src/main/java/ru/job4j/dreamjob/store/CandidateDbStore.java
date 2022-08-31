@@ -81,4 +81,17 @@ public class CandidateDbStore {
         }
         return null;
     }
+
+    /*
+    Данный метод используется при выполнении метода whenFindAllCandidates() в тестах
+     */
+    public void clearTable() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("DELETE FROM candidate")
+        ) {
+            ps.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
