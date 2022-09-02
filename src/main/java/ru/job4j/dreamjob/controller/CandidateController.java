@@ -14,6 +14,7 @@ import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.service.CandidateService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Controller
 @ThreadSafe
@@ -40,6 +41,7 @@ public class CandidateController {
     public String createCandidate(@ModelAttribute Candidate candidate,
                                   @RequestParam("file") MultipartFile file) throws IOException {
         candidate.setPhoto(file.getBytes());
+        candidate.setCreated(LocalDateTime.now());
         service.add(candidate);
         return "redirect:/candidates";
     }
