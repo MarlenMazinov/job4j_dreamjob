@@ -1,7 +1,7 @@
 package ru.job4j.dreamjob.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Post implements Serializable {
@@ -14,7 +14,7 @@ public class Post implements Serializable {
 
     private String description;
 
-    private Date created;
+    private LocalDateTime created;
 
     private Post() {
 
@@ -25,9 +25,12 @@ public class Post implements Serializable {
         this.name = name;
     }
 
-    public Post(int id, String name, String description, Date created) {
+    public Post(int id, String name, boolean visible, City city, String description,
+                LocalDateTime created) {
         this.id = id;
         this.name = name;
+        this.visible = visible;
+        this.city = city;
         this.description = description;
         this.created = created;
     }
@@ -72,11 +75,11 @@ public class Post implements Serializable {
         this.description = description;
     }
 
-    public Date getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
