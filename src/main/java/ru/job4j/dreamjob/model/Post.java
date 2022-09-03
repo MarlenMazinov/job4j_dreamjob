@@ -92,14 +92,11 @@ public class Post implements Serializable {
             return false;
         }
         Post post = (Post) o;
-        return getId() == post.getId() && isVisible() == post.isVisible()
-                && getCityId() == post.getCityId() && Objects.equals(getName(), post.getName())
-                && Objects.equals(getDescription(), post.getDescription());
+        return getId() == post.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), isVisible(),
-                getCityId(), getDescription());
+        return Objects.hash(getId());
     }
 }

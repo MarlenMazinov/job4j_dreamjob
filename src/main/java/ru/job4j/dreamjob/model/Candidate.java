@@ -80,15 +80,11 @@ public class Candidate {
             return false;
         }
         Candidate candidate = (Candidate) o;
-        return getId() == candidate.getId() && Objects.equals(getName(),
-                candidate.getName()) && Arrays.equals(getPhoto(), candidate.getPhoto())
-                && Objects.equals(getDescription(), candidate.getDescription());
+        return getId() == candidate.getId();
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getId(), getName(), getDescription());
-        result = 31 * result + Arrays.hashCode(getPhoto());
-        return result;
+        return Objects.hash(getId());
     }
 }
