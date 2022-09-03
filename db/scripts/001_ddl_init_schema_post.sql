@@ -3,7 +3,7 @@ create table post
     id          serial primary key,
     name        varchar(255),
     visible     boolean,
-    city        type_city,
+    city_id     int,
     description text,
     created     timestamp
 )

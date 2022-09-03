@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Controller
@@ -44,7 +42,7 @@ public class PostController {
 
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post, @ModelAttribute("city.id") String cityId) {
-        post.setCity(cityService.findById(Integer.parseInt(cityId)));
+        post.setCityId(cityService.findById(Integer.parseInt(cityId)).getId());
         post.setCreated(LocalDateTime.now());
         postService.add(post);
         return "redirect:/posts";
@@ -52,7 +50,7 @@ public class PostController {
 
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post, @ModelAttribute("city.id") String cityId) {
-        post.setCity(cityService.findById(Integer.parseInt(cityId)));
+        post.setCityId(cityService.findById(Integer.parseInt(cityId)).getId());
         postService.update(post);
         return "redirect:/posts";
     }

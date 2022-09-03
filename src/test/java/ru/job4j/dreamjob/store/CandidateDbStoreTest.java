@@ -4,47 +4,54 @@ import org.junit.Test;
 import ru.job4j.dreamjob.Main;
 import ru.job4j.dreamjob.model.Candidate;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CandidateDbStoreTest {
     @Test
     public void whenCreateCandidate() {
         CandidateDbStore store = new CandidateDbStore(new Main().loadPool());
-        Candidate candidate = new Candidate(0, "Alexandr");
+        Candidate candidate = new Candidate(0, "Alexandr", new byte[0],
+                "description of Alexandr", LocalDateTime.now());
         store.add(candidate);
         Candidate candidateInDb = store.findById(candidate.getId());
-        assertThat(candidateInDb.getName(), is(candidate.getName()));
+        assertEquals(candidateInDb, candidate);
     }
 
     @Test
     public void whenUpdateCandidate() {
         CandidateDbStore store = new CandidateDbStore(new Main().loadPool());
-        Candidate firstCandidate = new Candidate(1, "Alexandr");
+        LocalDateTime created = LocalDateTime.now();
+        Candidate firstCandidate = new Candidate(1, "Alexandr", new byte[0],
+                "description of Alexandr", created);
         int id = store.add(firstCandidate).getId();
-        Candidate secondCandidate = new Candidate(id, "Alexandr Petrov");
+        Candidate secondCandidate = new Candidate(id, "Alexandr Petrov", new byte[0],
+                "description of Alexandr", created);
         store.update(secondCandidate);
         Candidate candidateInDb = store.findById(id);
-        assertThat(candidateInDb.getName(), is(secondCandidate.getName()));
+        assertEquals(candidateInDb, secondCandidate);
     }
 
     @Test
     public void whenFindAllCandidates() {
         CandidateDbStore store = new CandidateDbStore(new Main().loadPool());
         store.clearTable();
-        List<Candidate> addedList = List.of(new Candidate(0, "Alex"),
-                new Candidate(1, "Olga"),
-                new Candidate(2, "Igor"));
+        List<Candidate> addedList = List.of(new Candidate(0, "Alex", new byte[0],
+                        "Alex descr", LocalDateTime.now()),
+                new Candidate(1, "Olga", new byte[0], "Olga descr", LocalDateTime.now()),
+                new Candidate(2, "Igor", new byte[0], "Igor descr", LocalDateTime.now()));
         addedList.forEach(store::add);
         List<Candidate> findedList = store.findAll();
-        List<String> addedCandidatesNames = new ArrayList<>(3);
-        addedList.forEach(candidate -> addedCandidatesNames.add(candidate.getName()));
-        List<String> findedCandidatesNames = new ArrayList<>(3);
-        findedList.forEach(candidate -> findedCandidatesNames.add(candidate.getName()));
-        assertEquals(addedCandidatesNames, findedCandidatesNames);
+        boolean result = true;
+        for (int i = 0; i < 3; i++) {
+            if (!addedList.get(i).equals(findedList.get(i))) {
+                result = false;
+                break;
+            }
+        }
+        assertTrue(result);
     }
 }

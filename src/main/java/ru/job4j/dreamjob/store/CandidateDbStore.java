@@ -17,6 +17,13 @@ import java.util.List;
 public class CandidateDbStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(CandidateDbStore.class.getName());
+    private static final String SELECT_QUERY = "SELECT * FROM candidate";
+    private static final String CREATE_QUERY = "INSERT INTO candidate(name, photo,"
+            + " description, created) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE candidate SET name=?, photo=?,"
+            + "description=? WHERE id = ?";
+    private static final String SELECT_BY_ID = "SELECT * FROM candidate WHERE id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM candidate";
     private final BasicDataSource pool;
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -26,7 +33,7 @@ public class CandidateDbStore {
     public List<Candidate> findAll() {
         List<Candidate> candidates = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate")
+             PreparedStatement ps = cn.prepareStatement(SELECT_QUERY)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -44,8 +51,7 @@ public class CandidateDbStore {
 
     public Candidate add(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate(name, photo,"
-                             + " description, created) VALUES (?, ?, ?, ?)",
+             PreparedStatement ps = cn.prepareStatement(CREATE_QUERY,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
@@ -66,9 +72,7 @@ public class CandidateDbStore {
 
     public void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("UPDATE candidate SET name=?, photo=?,"
-                     + "description=? WHERE id = ?")
-        ) {
+             PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)) {
             ps.setString(1, candidate.getName());
             ps.setBytes(2, candidate.getPhoto());
             ps.setString(3, candidate.getDescription());
@@ -81,7 +85,7 @@ public class CandidateDbStore {
 
     public Candidate findById(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(SELECT_BY_ID)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
@@ -102,7 +106,7 @@ public class CandidateDbStore {
      */
     public void clearTable() {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("DELETE FROM candidate")
+             PreparedStatement ps = cn.prepareStatement(DELETE_QUERY)
         ) {
             ps.execute();
         } catch (Exception e) {

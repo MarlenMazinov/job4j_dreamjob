@@ -2,11 +2,9 @@ package ru.job4j.dreamjob.service;
 
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
-import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostDbStore;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -22,18 +20,7 @@ public class PostService {
     }
 
     public List<Post> findAll() {
-        List<Post> posts = store.findAll();
-        posts.forEach(
-                post -> {
-                    City city = post.getCity();
-                    if (city != null) {
-                        post.setCity(
-                                cityService.findById(city.getId())
-                        );
-                    }
-                }
-        );
-        return posts;
+        return store.findAll();
     }
 
     public Post findById(int id) {

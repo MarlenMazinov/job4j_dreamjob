@@ -4,47 +4,53 @@ import org.junit.Test;
 import ru.job4j.dreamjob.Main;
 import ru.job4j.dreamjob.model.Post;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PostDbStoreTest {
     @Test
- public void whenCreatePost() {
+    public void whenCreatePost() {
         PostDbStore store = new PostDbStore(new Main().loadPool());
-        Post post = new Post(0, "Java Job");
+        Post post = new Post(0, "Java Job", true, 0, "Java descr", LocalDateTime.now());
         store.add(post);
         Post postInDb = store.findById(post.getId());
-        assertThat(postInDb.getName(), is(post.getName()));
+        assertEquals(postInDb, post);
     }
 
     @Test
     public void whenUpdatePost() {
         PostDbStore store = new PostDbStore(new Main().loadPool());
-        Post firstPost = new Post(1, "Java Job");
+        LocalDateTime created = LocalDateTime.now();
+        Post firstPost = new Post(1, "Java Job", true, 0, "Java descr", created);
         int id = store.add(firstPost).getId();
-        Post secondPost = new Post(id, "C++ Job");
+        Post secondPost = new Post(id, "C++ Job", true, 0, "Java descr", created);
         store.update(secondPost);
         Post postInDb = store.findById(id);
-        assertThat(postInDb.getName(), is(secondPost.getName()));
+        assertEquals(postInDb, secondPost);
     }
 
     @Test
     public void whenFindAllPosts() {
         PostDbStore store = new PostDbStore(new Main().loadPool());
         store.clearTable();
-        List<Post> addedList = List.of(new Post(0, "Java Job"),
-                new Post(1, "C++ Job"),
-                new Post(2, "Ruby Job"));
+        List<Post> addedList = List.of(new Post(0, "Java Job",
+                        true, 0, "Java descr", LocalDateTime.now()),
+                new Post(1, "C++ Job",
+                        true, 1, "C++ descr", LocalDateTime.now()),
+                new Post(2, "Ruby Job",
+                        true, 2, "Ruby descr", LocalDateTime.now()));
         addedList.forEach(store::add);
         List<Post> findedList = store.findAll();
-        List<String> addedPostsNames = new ArrayList<>(3);
-        addedList.forEach(post -> addedPostsNames.add(post.getName()));
-        List<String> findedPostsNames = new ArrayList<>(3);
-        findedList.forEach(post -> findedPostsNames.add(post.getName()));
-        assertEquals(addedPostsNames, findedPostsNames);
+        boolean result = true;
+        for (int i = 0; i < 3; i++) {
+            if (!addedList.get(i).equals(findedList.get(i))) {
+                result = false;
+                break;
+            }
+        }
+        assertTrue(result);
     }
 }

@@ -4,7 +4,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 
 import java.sql.Connection;
@@ -18,6 +17,13 @@ import java.util.List;
 public class PostDbStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(PostDbStore.class.getName());
+    private static final String SELECT_QUERY = "SELECT * FROM post";
+    private static final String CREATE_QUERY = "INSERT INTO post(name, visible, city_id, "
+            + "description, created) VALUES (?, ?, ?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE post SET name=?, visible=?,"
+            + "city_id=?, description=? WHERE id = ?";
+    private static final String SELECT_BY_ID_QUERY = "SELECT * FROM post WHERE id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM post";
     private final BasicDataSource pool;
 
     public PostDbStore(BasicDataSource pool) {
@@ -27,17 +33,16 @@ public class PostDbStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")
+             PreparedStatement ps = cn.prepareStatement(SELECT_QUERY)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
                     int id = it.getInt("id");
-                    Post post = new Post(id, it.getString("name"),
+                    posts.add(new Post(id, it.getString("name"),
                             it.getBoolean("visible"),
-                            null,
+                            it.getInt("city_id"),
                             it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime());
-                    posts.add(setCity(post, id, cn));
+                            it.getTimestamp("created").toLocalDateTime()));
                 }
             }
         } catch (Exception e) {
@@ -49,16 +54,14 @@ public class PostDbStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO post(name, visible, city, "
-                             + "description, created) VALUES (?, ?, row(?,?), ?, ?)",
+             PreparedStatement ps = cn.prepareStatement(CREATE_QUERY,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
             ps.setBoolean(2, post.isVisible());
-            ps.setObject(3, post.getCity().getId());
-            ps.setObject(4, post.getCity().getName());
-            ps.setString(5, post.getDescription());
-            ps.setTimestamp(6, Timestamp.valueOf(post.getCreated()));
+            ps.setInt(3, post.getCityId());
+            ps.setString(4, post.getDescription());
+            ps.setTimestamp(5, Timestamp.valueOf(post.getCreated()));
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -73,15 +76,13 @@ public class PostDbStore {
 
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("UPDATE post SET name=?, visible=?,"
-                     + "city=row(?,?), description=? WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(UPDATE_QUERY)
         ) {
             ps.setString(1, post.getName());
             ps.setBoolean(2, post.isVisible());
-            ps.setObject(3, post.getCity().getId());
-            ps.setObject(4, post.getCity().getName());
-            ps.setString(5, post.getDescription());
-            ps.setInt(6, post.getId());
+            ps.setInt(3, post.getCityId());
+            ps.setString(4, post.getDescription());
+            ps.setInt(5, post.getId());
             ps.execute();
         } catch (Exception e) {
             LOG.error("Exception", e);
@@ -90,16 +91,15 @@ public class PostDbStore {
 
     public Post findById(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(SELECT_BY_ID_QUERY)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    Post post = new Post(it.getInt("id"), it.getString("name"),
-                            it.getBoolean("visible"), null,
+                    return new Post(it.getInt("id"), it.getString("name"),
+                            it.getBoolean("visible"), it.getInt("city_id"),
                             it.getString("description"),
                             it.getTimestamp("created").toLocalDateTime());
-                    return setCity(post, id, cn);
                 }
             }
         } catch (Exception e) {
@@ -113,26 +113,11 @@ public class PostDbStore {
      */
     public void clearTable() {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("DELETE FROM post")
+             PreparedStatement ps = cn.prepareStatement(DELETE_QUERY)
         ) {
             ps.execute();
         } catch (Exception e) {
             LOG.error("Exception", e);
         }
-    }
-
-    private Post setCity(Post post, int id, Connection cn) throws Exception {
-        try (PreparedStatement psCity =
-                     cn.prepareStatement("select (post.city).city_id, "
-                             + "(post.city).city_name from post where post.id = ?")) {
-            psCity.setInt(1, id);
-            try (ResultSet itCity = psCity.executeQuery()) {
-                if (itCity.next()) {
-                    post.setCity(new City(itCity.getInt("city_id"),
-                            itCity.getString("city_name")));
-                }
-            }
-        }
-        return post;
     }
 }

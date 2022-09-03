@@ -72,11 +72,6 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.30</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -121,7 +116,7 @@
         <db.driver>org.h2.Driver</db.driver>
       </properties>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
     </profile>
     <profile>
@@ -132,9 +127,6 @@
         <db.password>password</db.password>
         <db.driver>org.postgresql.Driver</db.driver>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
     </profile>
   </profiles>
 
