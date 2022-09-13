@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDbStore {
@@ -49,7 +50,7 @@ public class UserDbStore {
     }
 
 
-    public User add(User user) {
+    public Optional<User> add(User user) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(CREATE_QUERY,
                      PreparedStatement.RETURN_GENERATED_KEYS)
@@ -60,13 +61,13 @@ public class UserDbStore {
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
                     user.setId(id.getInt(1));
-                    return user;
+                    return Optional.of(user);
                 }
             }
         } catch (Exception e) {
             LOG.error("Exception", e);
         }
-        return null;
+        return Optional.empty();
     }
 
     public void update(User user) {
@@ -98,7 +99,7 @@ public class UserDbStore {
         return null;
     }
 
-    public User findUserByEmailAndPwd(String email, String pwd) {
+    public Optional<User> findUserByEmailAndPwd(String email, String pwd) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(SELECT_BY_EMAIL_AND_PWD)
         ) {
@@ -106,14 +107,14 @@ public class UserDbStore {
             ps.setString(2, pwd);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new User(it.getInt("id"), it.getString("email"),
-                            it.getString("password"));
+                    return Optional.of(new User(it.getInt("id"), it.getString("email"),
+                            it.getString("password")));
                 }
             }
         } catch (Exception e) {
             LOG.error("Exception", e);
         }
-        return null;
+        return Optional.empty();
     }
 
     /*

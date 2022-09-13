@@ -8,5 +8,4 @@
     <include file="scripts/001_ddl_init_schema_post.sql" relativeToChangelogFile="true"/>
     <include file="scripts/002_ddl_init_schema_candidate.sql" relativeToChangelogFile="true"/>
     <include file="scripts/003_ddl_init_schema_users.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/004_ddl_add_constraint_users.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

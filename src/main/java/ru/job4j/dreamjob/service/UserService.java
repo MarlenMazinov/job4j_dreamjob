@@ -27,11 +27,11 @@ public class UserService {
 
     public Optional<User> findUserByEmailAndPwd(String email, String pwd) {
 
-        return Optional.ofNullable(store.findUserByEmailAndPwd(email, pwd));
+        return store.findUserByEmailAndPwd(email, pwd);
     }
 
     public Optional<User> add(User user) {
-        return Optional.ofNullable(store.add(user));
+        return store.add(user);
     }
 
     public void update(User user) {
