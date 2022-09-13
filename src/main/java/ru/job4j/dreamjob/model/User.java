@@ -13,6 +13,15 @@ public class User {
         this.password = password;
     }
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public User() {
+
+    }
+
     public int getId() {
         return id;
     }
@@ -46,11 +55,11 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return getId() == user.getId();
+        return getEmail().equals(user.getEmail()) && getPassword().equals(user.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(getEmail(), getPassword());
     }
 }

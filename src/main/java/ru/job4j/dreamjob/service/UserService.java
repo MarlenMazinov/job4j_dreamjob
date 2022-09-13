@@ -25,6 +25,11 @@ public class UserService {
         return store.findById(id);
     }
 
+    public Optional<User> findUserByEmailAndPwd(String email, String pwd) {
+
+        return Optional.ofNullable(store.findUserByEmailAndPwd(email, pwd));
+    }
+
     public Optional<User> add(User user) {
         return Optional.ofNullable(store.add(user));
     }

@@ -20,6 +20,10 @@ public class UserDbStore {
     private static final String UPDATE_QUERY = "UPDATE users SET email=?, password=?"
             + "WHERE id = ?";
     private static final String SELECT_BY_ID = "SELECT * FROM users WHERE id = ?";
+
+    private static final String SELECT_BY_EMAIL_AND_PWD = "SELECT * FROM users WHERE email = ? "
+            + "and password = ?";
+
     private static final String DELETE_QUERY = "DELETE FROM users";
     private final BasicDataSource pool;
 
@@ -92,5 +96,36 @@ public class UserDbStore {
             LOG.error("Exception", e);
         }
         return null;
+    }
+
+    public User findUserByEmailAndPwd(String email, String pwd) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(SELECT_BY_EMAIL_AND_PWD)
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, pwd);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    return new User(it.getInt("id"), it.getString("email"),
+                            it.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception", e);
+        }
+        return null;
+    }
+
+    /*
+    Данный метод используется при выполнении метода whenFindAllPosts() в тестах
+     */
+    public void clearTable() {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(DELETE_QUERY)
+        ) {
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception", e);
+        }
     }
 }

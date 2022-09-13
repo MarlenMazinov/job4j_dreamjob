@@ -1218,3 +1218,79 @@ SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
 Table "DATABASECHANGELOGLOCK" not found; SQL statement:
 SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:25:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:25:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:26:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:26:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "USERS" не найдена
+Table "USERS" not found; SQL statement:
+INSERT INTO users(email, password) VALUES (?, ?) [42102-200]
+2022-09-12 16:26:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "USERS" не найдена
+Table "USERS" not found; SQL statement:
+INSERT INTO users(email, password) VALUES (?, ?) [42102-200]
+2022-09-12 16:26:22 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "USERS" не найдена
+Table "USERS" not found; SQL statement:
+INSERT INTO users(email, password) VALUES (?, ?) [42102-200]
+2022-09-12 16:26:22 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "USERS" не найдена
+Table "USERS" not found; SQL statement:
+SELECT * FROM users WHERE id = ? [42102-200]
+2022-09-12 16:32:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:32:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:32:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:55:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:55:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:55:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:57:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:57:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-12 16:57:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-13 08:17:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-13 08:17:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]
+2022-09-13 08:17:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "DATABASECHANGELOGLOCK" не найдена
+Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-200]

@@ -11,7 +11,9 @@ class UserServiceTest {
 
     @Test
     void whenAddExistsUser() {
-        UserService service = new UserService(new UserDbStore(new Main().loadPool()));
+        UserDbStore store = new UserDbStore(new Main().loadPool());
+        store.clearTable();
+        UserService service = new UserService(store);
         User user1 = new User(0, "user@mail.ru", "myPassword$$89");
         User user2 = new User(1, "user@mail.ru", "myPass$$89");
         service.add(user1);
