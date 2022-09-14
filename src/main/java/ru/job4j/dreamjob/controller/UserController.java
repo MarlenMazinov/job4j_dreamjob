@@ -9,6 +9,7 @@ import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -21,8 +22,14 @@ public class UserController implements ErrorController {
     }
 
     @GetMapping("/formRegistration")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User(0, "email", "password"));
+    public String addUser(Model model, HttpSession session) {
+        //model.addAttribute("user", new User(0, "email", "password"));
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setEmail("Гость");
+        }
+        model.addAttribute("user", user);
         return "registrationForm";
     }
 
@@ -33,7 +40,7 @@ public class UserController implements ErrorController {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
             return "fail";
         }
-        return "redirect:/success";
+        return "success";
     }
 
     @GetMapping("/loginPage")
@@ -44,23 +51,31 @@ public class UserController implements ErrorController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User user) {
+    public String login(@ModelAttribute User user, HttpServletRequest req) {
         Optional<User> userDb = userService.findUserByEmailAndPwd(
                 user.getEmail(), user.getPassword()
         );
         if (userDb.isEmpty()) {
             return "redirect:/loginPage?fail=true";
         }
+        HttpSession session = req.getSession();
+        session.setAttribute("user", userDb.get());
         return "redirect:/index";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/loginPage";
+    }
+
     @GetMapping("/success")
-    String redirectToSuccess() {
+    String redirectToSuccess(@ModelAttribute User user) {
         return "success";
     }
 
     @GetMapping("/fail")
-    String redirectToFail() {
+    String redirectToFail(@ModelAttribute User user) {
         return "fail";
     }
 }

@@ -11,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.service.CandidateService;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -26,14 +28,16 @@ public class CandidateController {
     }
 
     @GetMapping("/candidates")
-    public String candidates(Model model) {
+    public String candidates(Model model, HttpSession session) {
         model.addAttribute("candidates", service.findAll());
+        setUser(model, session);
         return "candidates";
     }
 
     @GetMapping("/formAddCandidate")
-    public String addCandidates(Model model) {
+    public String addCandidates(Model model, HttpSession session) {
         model.addAttribute("post", new Candidate(0, "Заполните поле"));
+        setUser(model, session);
         return "addCandidate";
     }
 
@@ -55,18 +59,30 @@ public class CandidateController {
     }
 
     @GetMapping("/formUpdateCandidate/{candidateId}")
-    public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id) {
+    public String formUpdateCandidate(Model model, @PathVariable("candidateId") int id,
+                                      HttpSession session) {
         model.addAttribute("candidate", service.findById(id));
+        setUser(model, session);
         return "updateCandidate";
     }
 
     @GetMapping("/photoCandidate/{candidateId}")
-    public ResponseEntity<Resource> download(@PathVariable("candidateId") Integer candidateId) {
+    public ResponseEntity<Resource> download(Model model,
+                                             @PathVariable("candidateId") Integer candidateId) {
         Candidate candidate = service.findById(candidateId);
         return ResponseEntity.ok()
                 .headers(new HttpHeaders())
                 .contentLength(candidate.getPhoto().length)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(new ByteArrayResource(candidate.getPhoto()));
+    }
+
+    private void setUser(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setEmail("Гость");
+        }
+        model.addAttribute("user", user);
     }
 }
