@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.job4j.dreamjob.model.User;
+import ru.job4j.util.SetterOfUser;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,12 +15,7 @@ public class IndexController {
 
     @GetMapping("/index")
     public String index(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setEmail("Гость");
-        }
-        model.addAttribute("user", user);
+        SetterOfUser.setUser(model, session);
         return "index";
     }
 }

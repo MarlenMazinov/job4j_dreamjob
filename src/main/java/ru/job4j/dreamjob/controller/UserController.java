@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.service.UserService;
+import ru.job4j.util.SetterOfUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,13 +24,7 @@ public class UserController implements ErrorController {
 
     @GetMapping("/formRegistration")
     public String addUser(Model model, HttpSession session) {
-        //model.addAttribute("user", new User(0, "email", "password"));
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setEmail("Гость");
-        }
-        model.addAttribute("user", user);
+        SetterOfUser.setUser(model, session);
         return "registrationForm";
     }
 
@@ -70,7 +65,7 @@ public class UserController implements ErrorController {
     }
 
     @GetMapping("/success")
-    String redirectToSuccess(@ModelAttribute User user) {
+    String redirectToSuccess(@ModelAttribute User user, HttpSession session) {
         return "success";
     }
 
