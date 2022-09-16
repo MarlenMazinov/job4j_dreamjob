@@ -33,6 +33,7 @@ public class UserController implements ErrorController {
         Optional<User> regUser = userService.add(user);
         if (regUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
+            user.setEmail("Гость");
             return "fail";
         }
         return "success";
@@ -65,7 +66,7 @@ public class UserController implements ErrorController {
     }
 
     @GetMapping("/success")
-    String redirectToSuccess(@ModelAttribute User user, HttpSession session) {
+    String redirectToSuccess(@ModelAttribute User user) {
         return "success";
     }
 
